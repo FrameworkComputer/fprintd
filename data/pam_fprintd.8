@@ -165,6 +165,8 @@ authentication failure. The minimum, and default, number of tries is 3.
 .IX Item "timeout=TIMEOUT"
 The amount of time before returning an authentication failure. The default timeout
 is 30 seconds, with 10 seconds being the minimum.
+Use a negative value to set no limit at all, so that fingerprint authentication will
+be always active while this module is loaded.
 .SH "LIMITATIONS"
 .IX Header "LIMITATIONS"
 The \s-1PAM\s0 stack is by design a serialised authentication, so it is not
