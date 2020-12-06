@@ -836,7 +836,8 @@ pam_sm_authenticate (pam_handle_t *pamh, int flags, int argc,
             }
           else if (str_has_prefix (argv[i], MAX_TRIES_MATCH) && strlen (argv[i]) > strlen (MAX_TRIES_MATCH))
             {
-              max_tries = atoi (argv[i] + strlen (MAX_TRIES_MATCH));
+              int opt_max_tries = atoi (argv[i] + strlen (MAX_TRIES_MATCH));
+              max_tries = (opt_max_tries < 0 ? UINT_MAX : (unsigned) opt_max_tries);
               if (max_tries < 1)
                 {
                   if (debug)
