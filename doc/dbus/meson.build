@@ -9,13 +9,13 @@ docbook_xml_header = custom_target('docbook_xml_header',
 )
 
 dbus_interfaces_refs = []
-foreach interface_file: dbus_interfaces_files
-    basename = run_command('basename', interface_file.full_path(), '.xml').stdout().strip()
+foreach interface_file: dbus_interfaces
+    basename = run_command('basename', interface_file, '.xml').stdout().strip()
     dbus_interfaces_refs += custom_target(basename + '_ref',
         input: docbook_xml_header,
         output: basename + '.ref.xml',
         build_by_default: true,
-        depends: interface_file,
+        depend_files: interface_file,
         capture: true,
         command: [
             bash, '-c',
