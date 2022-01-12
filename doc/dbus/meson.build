@@ -19,11 +19,10 @@ foreach interface_file: dbus_interfaces_files
         capture: true,
         command: [
             bash, '-c',
-            'cat @INPUT@;' +
-            xsltproc.path() + ' @0@/@1@ '.format(
-                meson.source_root(),
-                files('spec-to-docbook.xsl')[0]) +
-            interface_file.full_path() + '| tail -n +2;',
+            'cat "$1"; "$2" "$3" "$4" | tail -n +2',
+            '_', # argv0 ignored
+            '@INPUT@',
+            xsltproc, files('spec-to-docbook.xsl')[0], interface_file
         ],
     )
 endforeach
