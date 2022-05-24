@@ -92,7 +92,7 @@ gmodule_dep = dependency('gmodule-2.0', version: '>=' + glib_min_version)
 libfprint_dep = dependency('libfprint-2', version: '>=' + libfprint_min_version)
 polkit_gobject_dep = dependency('polkit-gobject-1', version: '>= 0.91')
 dbus_dep = dependency('dbus-1', required: false)
-libsystemd_dep = dependency('libsystemd', required: get_option('pam'))
+libsystemd_dep = dependency(get_option('libsystemd'), required: get_option('pam'))
 pam_dep = cc.find_library('pam',
     required: get_option('pam'),
     has_headers: 'security/pam_modules.h',
