@@ -137,7 +137,10 @@ endif
 polkit_policy_directory = polkit_gobject_dep.get_pkgconfig_variable('policydir')
 
 # Tests dependencies
-pam_wrapper_dep = dependency('pam_wrapper', required: get_option('pam'))
+pam_wrapper_dep = dependency('pam_wrapper', required: false)
+if get_option('pam') and not pam_wrapper_dep.found()
+    warning('Dependency "pam_wrapper" required by test suite not found')
+endif
 
 xmllint = find_program('xmllint', required: false)
 python3 = find_program('python3') # No meson without it!
