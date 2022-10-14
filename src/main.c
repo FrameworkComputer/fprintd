@@ -64,14 +64,17 @@ load_storage_module (const char *module_name)
   if (module == NULL)
     return FALSE;
 
+  g_debug ("About to load module '%s'", filename);
   if (!g_module_symbol (module, "init", (gpointer *) &store.init) ||
       !g_module_symbol (module, "deinit", (gpointer *) &store.deinit) ||
       !g_module_symbol (module, "print_data_save", (gpointer *) &store.print_data_save) ||
       !g_module_symbol (module, "print_data_load", (gpointer *) &store.print_data_load) ||
       !g_module_symbol (module, "print_data_delete", (gpointer *) &store.print_data_delete) ||
-      !g_module_symbol (module, "discover_prints", (gpointer *) &store.discover_prints))
+      !g_module_symbol (module, "discover_prints", (gpointer *) &store.discover_prints) ||
+      !g_module_symbol (module, "discover_users", (gpointer *) &store.discover_users))
     {
       g_module_close (module);
+      g_debug ("Failed to load module. Please update your code.");
       return FALSE;
     }
 
