@@ -13,7 +13,7 @@ option('systemd',
 option('libsystemd',
     description: 'Libsystemd provider (libsystemd or libelogind)',
     type: 'combo',
-    choices: [ 'libsystemd', 'libelogind' ],
+    choices: [ 'libsystemd', 'libelogind', 'basu'],
     value: 'libsystemd')
 option('systemd_system_unit_dir',
     description: 'Directory for systemd service files',
