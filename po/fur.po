@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Fabio Tomat <f.t.public@gmail.com>, 2017, 2021.
+# Fabio Tomat <f.t.public@gmail.com>, 2017, 2021, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: fprintd\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-12-02 10:58+0100\n"
-"PO-Revision-Date: 2021-11-07 16:18+0000\n"
+"PO-Revision-Date: 2023-02-23 13:20+0000\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <https://translate.fedoraproject.org/projects/"
 "fprintd/fprintd/fur/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.8\n"
+"X-Generator: Weblate 4.15.2\n"
 
 #: data/net.reactivated.fprint.device.policy.in:13
 msgid "Verify a fingerprint"
@@ -29,26 +29,22 @@ msgid "Privileges are required to verify fingerprints."
 msgstr "A son necessaris i privileçs par verificâ impronts digjitâi."
 
 #: data/net.reactivated.fprint.device.policy.in:23
-#, fuzzy
 msgid "Enroll or Delete fingerprints"
-msgstr "Regjistre gnûfs impronts digjitâi"
+msgstr "Regjistre o elimine impronts digjitâi"
 
 #: data/net.reactivated.fprint.device.policy.in:24
-#, fuzzy
 msgid "Privileges are required to enroll or delete fingerprints."
-msgstr "I privileçs a son necessaris par regjistrâ gnûfs impronts digjitâi."
+msgstr "I privileçs a son necessaris par regjistrâ o eliminâ impronts digjitâi."
 
 #: data/net.reactivated.fprint.device.policy.in:33
-#, fuzzy
 msgid "Select a user to manage fingerprints for"
-msgstr "Selezione un utent di regjistrâ"
+msgstr "Selezione un utent par podê gjestî i siei impronts digjitâi"
 
 #: data/net.reactivated.fprint.device.policy.in:34
-#, fuzzy
 msgid "Privileges are required to manage fingerprints for other users."
 msgstr ""
-"I privileçs a son necessaris par regjistrâ gnûfs impronts digjitâi par "
-"altris utents."
+"I privileçs a son necessaris par gjestî i impronts digjitâi par altris "
+"utents."
 
 #: src/device.c:783
 #, c-format
