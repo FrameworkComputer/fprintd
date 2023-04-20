@@ -59,7 +59,11 @@ load_storage_module (const char *module_name)
   GModule *module;
   g_autofree char *filename = NULL;
 
+#if !GLIB_CHECK_VERSION (2, 76, 0)
   filename = g_module_build_path (PLUGINDIR, module_name);
+#else
+  filename = g_build_filename (PLUGINDIR, module_name, NULL);
+#endif
   module = g_module_open (filename, 0);
   if (module == NULL)
     return FALSE;
