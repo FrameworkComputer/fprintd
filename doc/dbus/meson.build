@@ -18,7 +18,7 @@ foreach interface_file: dbus_interfaces
         depend_files: interface_file,
         capture: true,
         command: [
-            bash, '-c',
+            sh, '-c',
             'cat "$1"; "$2" "$3" "$4" | tail -n +2',
             '_', # argv0 ignored
             '@INPUT@',

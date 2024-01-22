@@ -1,4 +1,4 @@
-bash = find_program('bash')
+sh = find_program('sh')
 dbus_interfaces = files(
     'net.reactivated.Fprint.Manager.xml',
     'net.reactivated.Fprint.Device.xml',
