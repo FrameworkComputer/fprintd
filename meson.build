@@ -1,5 +1,5 @@
 project('fprintd', 'c',
-    version: '1.94.2',
+    version: '1.94.3',
     license: 'GPLv2+',
     default_options: [
         'buildtype=debugoptimized',
