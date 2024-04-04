@@ -365,6 +365,8 @@ class FPrintdTest(dbusmock.DBusTestCase):
         self.run_dir = os.path.join(self.test_dir, 'run')
         self.device_id = 0
         self._async_call_res = {}
+        os.environ['FP_DRIVERS_ALLOWLIST'] = self.device_driver
+        # TODO: Remove this when we depend on libfprint 1.94.7
         os.environ['FP_DRIVERS_WHITELIST'] = self.device_driver
 
         # Always start fake polkitd because of
@@ -1249,11 +1251,15 @@ class FPrintdManagerTests(FPrintdVirtualDeviceBaseTest):
 class FPrintdManagerPreStartTests(FPrintdVirtualImageDeviceBaseTests):
 
     def test_manager_get_no_devices(self):
+        os.environ['FP_DRIVERS_ALLOWLIST'] = 'hopefully_no_existing_driver'
+        # TODO: Remove this when we depend on libfprint 1.94.7
         os.environ['FP_DRIVERS_WHITELIST'] = 'hopefully_no_existing_driver'
         self.daemon_start()
         self.assertListEqual(self.manager.GetDevices(), [])
 
     def test_manager_get_no_default_device(self):
+        os.environ['FP_DRIVERS_ALLOWLIST'] = 'hopefully_no_existing_driver'
+        # TODO: Remove this when we depend on libfprint 1.94.7
         os.environ['FP_DRIVERS_WHITELIST'] = 'hopefully_no_existing_driver'
         self.daemon_start()
 
