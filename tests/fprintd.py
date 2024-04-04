@@ -331,6 +331,7 @@ class FPrintdTest(dbusmock.DBusTestCase):
 
         self._polkitd, self._polkitd_obj = self.spawn_server_template(
             polkitd_template, {}, stdout=subprocess.PIPE)
+        self.addCleanup(self._polkitd.stdout.close)
         self.addCleanup(self.stop_server, '_polkitd', '_polkitd_obj')
 
         return self._polkitd
@@ -570,7 +571,7 @@ class FPrintdTest(dbusmock.DBusTestCase):
         return all_replies
 
     def gdbus_device_method_call_process(self, method, args=[]):
-        return subprocess.Popen([
+        proc = subprocess.Popen([
             'gdbus',
             'call',
             '--system',
@@ -581,6 +582,8 @@ class FPrintdTest(dbusmock.DBusTestCase):
             '--method',
             '{}.{}'.format(self.device.get_interface_name(), method),
         ] + args, stderr=subprocess.STDOUT, stdout=subprocess.PIPE)
+        self.addCleanup(proc.stdout.close)
+        return proc
 
     def call_device_method_from_other_client(self, method, args=[]):
         try:
