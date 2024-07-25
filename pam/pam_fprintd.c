@@ -33,8 +33,14 @@
 #include <errno.h>
 
 #include <libintl.h>
+
+#if _USE_BASU
+#include <basu/sd-bus.h>
+#else
 #include <systemd/sd-bus.h>
 #include <systemd/sd-login.h>
+#endif
+
 #ifdef __linux__
 #include <signal.h>
 #include <sys/signalfd.h>
@@ -799,8 +805,10 @@ is_remote (pam_handle_t *pamh)
       strcmp (rhost, "localhost") != 0)
     return true;
 
+#if !(_USE_BASU)
   if (sd_session_is_remote (NULL) > 0)
     return true;
+#endif
 
   return false;
 }
