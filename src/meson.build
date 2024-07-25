@@ -26,7 +26,6 @@ fprintd_dbus_sources += custom_target('fprintd-dbus-interactive',
     command: [
         find_program('patch'),
         '-p1',
-        '--merge',
         '@INPUT@',
         files('dbus-interactive-auth.patch'),
         '-o', '@OUTPUT@',
