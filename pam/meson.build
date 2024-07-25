@@ -16,6 +16,7 @@ pam_fprintd = shared_module('pam_fprintd',
     dependencies: [
         libsystemd_dep,
         pam_dep,
+        gettext_deps,
     ],
     c_args: [
         '-DLOCALEDIR="@0@"'.format(localedir),

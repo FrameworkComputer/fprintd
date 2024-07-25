@@ -98,6 +98,16 @@ pam_dep = cc.find_library('pam',
     has_headers: 'security/pam_modules.h',
 )
 
+if host_machine.system() == 'linux' or host_machine.system() == 'gnu'
+  gettext_deps = []
+elif host_machine.system() == 'freebsd' or host_machine.system() == 'openbsd' or host_machine.system() == 'dragonfly'
+  gettext_deps = [cc.find_library('intl', dirs: ['/usr/local/lib'])]
+elif host_machine.system() == 'netbsd'
+  gettext_deps = [cc.find_library('intl', dirs: ['/usr/pkg/lib'])]
+else # darwin, cygwin
+  gettext_deps = [cc.find_library('intl')]
+endif
+
 pod2man = find_program('pod2man', required: get_option('man'))
 xsltproc = find_program('xsltproc', required: get_option('gtk_doc'))
 
