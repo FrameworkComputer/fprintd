@@ -29,6 +29,7 @@
 #include <sys/types.h>
 #include <string.h>
 #include <syslog.h>
+#include <time.h>
 #include <errno.h>
 
 #include <libintl.h>
