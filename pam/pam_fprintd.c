@@ -41,7 +41,12 @@
 
 #define PAM_SM_AUTH
 #include <security/pam_modules.h>
+#if _USE_OPENPAM
+#include <security/pam_appl.h>
+#define pam_syslog(H, C, ...)       syslog(C, __VA_ARGS__)
+#else
 #include <security/pam_ext.h>
+#endif
 
 #define _(s) ((char *) dgettext (GETTEXT_PACKAGE, s))
 #define TR(s) dgettext (GETTEXT_PACKAGE, s)
@@ -439,7 +444,11 @@ do_verify (sd_bus      *bus,
 
       data->timed_out = false;
       data->verify_started = false;
+#if _USE_OPENPAM
+      data->verify_ret = PAM_CONV_ERR;
+#else
       data->verify_ret = PAM_INCOMPLETE;
+#endif
 
       free (data->result);
       data->result = NULL;
@@ -476,7 +485,11 @@ do_verify (sd_bus      *bus,
           r = sd_bus_process (bus, NULL);
           if (r < 0)
             break;
+#if _USE_OPENPAM
+          if (data->verify_ret != PAM_CONV_ERR)
+#else
           if (data->verify_ret != PAM_INCOMPLETE)
+#endif
             break;
           if (!data->verify_started)
             continue;
@@ -496,7 +509,11 @@ do_verify (sd_bus      *bus,
             }
         }
 
+#if _USE_OPENPAM
+      if (data->verify_ret != PAM_CONV_ERR)
+#else
       if (data->verify_ret != PAM_INCOMPLETE)
+#endif
         return data->verify_ret;
 
       if (now () >= verification_end)

@@ -2,6 +2,10 @@ option('pam',
     description: 'Build the fprintd PAM module',
     type: 'boolean',
     value: true)
+option('openpam',
+    description: 'Build with OpenPAM instead of linux-pam',
+    type: 'boolean',
+    value: false)
 option('man',
     description: 'Generate the man files',
     type: 'boolean',
