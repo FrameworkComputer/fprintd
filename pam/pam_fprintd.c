@@ -34,9 +34,11 @@
 #include <libintl.h>
 #include <systemd/sd-bus.h>
 #include <systemd/sd-login.h>
+#ifdef __linux__
 #include <signal.h>
 #include <sys/signalfd.h>
 #include <poll.h>
+#endif
 
 #define PAM_SM_AUTH
 #include <security/pam_modules.h>
@@ -373,6 +375,7 @@ verify_started_cb (sd_bus_message *m,
   return 1;
 }
 
+#ifdef __linux__
 static void
 fd_cleanup (int *fd)
 {
@@ -382,6 +385,7 @@ fd_cleanup (int *fd)
 
 typedef int fd_int;
 PF_DEFINE_AUTO_CLEAN_FUNC (fd_int, fd_cleanup);
+#endif
 
 static int
 do_verify (sd_bus      *bus,
@@ -390,8 +394,10 @@ do_verify (sd_bus      *bus,
   pf_autoptr (sd_bus_slot) verify_status_slot = NULL;
   pf_autoptr (sd_bus_slot) verify_finger_selected_slot = NULL;
   pf_autofree char *scan_type = NULL;
+#ifdef __linux__
   sigset_t signals;
   fd_int signal_fd = -1;
+#endif
   int r;
 
   /* Get some properties for the device */
@@ -442,9 +448,11 @@ do_verify (sd_bus      *bus,
                        verify_finger_selected,
                        data);
 
+#ifdef __linux__
   sigemptyset (&signals);
   sigaddset (&signals, SIGINT);
   signal_fd = signalfd (signal_fd, &signals, SFD_NONBLOCK);
+#endif
 
   while (data->max_tries > 0)
     {
@@ -483,13 +491,16 @@ do_verify (sd_bus      *bus,
 
       for (;;)
         {
+#ifdef __linux__
           struct signalfd_siginfo siginfo;
+#endif
           int64_t wait_time;
 
           wait_time = verification_end - now ();
           if (wait_time <= 0)
             break;
 
+#ifdef __linux__
           if (read (signal_fd, &siginfo, sizeof (siginfo)) > 0)
             {
               if (debug)
@@ -498,6 +509,7 @@ do_verify (sd_bus      *bus,
               /* The only way for this to happen is if we received SIGINT. */
               return PAM_AUTHINFO_UNAVAIL;
             }
+#endif
 
           r = sd_bus_process (bus, NULL);
           if (r < 0)
@@ -510,10 +522,12 @@ do_verify (sd_bus      *bus,
             break;
           if (r == 0)
             {
+#ifdef __linux__
               struct pollfd fds[2] = {
                 { sd_bus_get_fd (bus), sd_bus_get_events (bus), 0 },
                 { signal_fd, POLLIN, 0 },
               };
+#endif
 
               if (debug)
                 {
@@ -523,12 +537,17 @@ do_verify (sd_bus      *bus,
                               wait_time);
                 }
 
+#if defined(__linux__)
               r = poll (fds, 2, wait_time / USEC_PER_MSEC);
               if (r < 0 && errno != EINTR)
                 {
                   pam_syslog (data->pamh, LOG_ERR, "Error waiting for events: %d", errno);
                   return PAM_AUTHINFO_UNAVAIL;
                 }
+#else
+	      if (sd_bus_wait (bus, wait_time) < 0)
+                break;
+#endif
             }
         }
 
