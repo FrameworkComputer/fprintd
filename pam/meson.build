@@ -20,8 +20,7 @@ pam_fprintd = shared_module('pam_fprintd',
     ],
     c_args: [
         '-DLOCALEDIR="@0@"'.format(localedir),
-        '-D_USE_BASU=@0@'.format(get_option('libsystemd') == 'basu' ? 1 : 0),
-    ],
+    ] + (libsystemd_dep.name() == 'basu' ? ['-DFPRINTD_PAM_USE_BASU'] : []),
     link_args: [
         '-Wl,--version-script,@0@/@1@'.format(meson.source_root(), mapfile[0]),
         '-Wl,--unresolved-symbols=report-all',

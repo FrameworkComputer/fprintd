@@ -34,7 +34,7 @@
 
 #include <libintl.h>
 
-#if _USE_BASU
+#ifdef FPRINTD_PAM_USE_BASU
 #include <basu/sd-bus.h>
 #else
 #include <systemd/sd-bus.h>
@@ -805,7 +805,7 @@ is_remote (pam_handle_t *pamh)
       strcmp (rhost, "localhost") != 0)
     return true;
 
-#if !(_USE_BASU)
+#ifndef FPRINTD_PAM_USE_BASU
   if (sd_session_is_remote (NULL) > 0)
     return true;
 #endif
